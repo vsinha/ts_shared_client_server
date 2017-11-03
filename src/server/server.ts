@@ -1,11 +1,15 @@
 import * as express from 'express';
-import WebSocket from 'ws';
+import * as WebSocket from 'ws';
 import * as http from 'http';
 import * as url from 'url';
 // import { apiRouter } from './routes/api-router';
 import { staticsRouter } from './routes/statics-router';
 import { staticsDevRouter } from './routes/statics-dev-router';
 import * as config from './config';
+import { GameLogic, GameRoom } from "../shared/game";
+
+console.log("here");
+console.dir(GameRoom);
 
 const app = express();
 
@@ -13,14 +17,14 @@ const app = express();
 // app.use(wsRouter());
 app.use(config.IS_PRODUCTION ? staticsRouter() : staticsDevRouter());
 
-app.listen(config.SERVER_PORT, () => {
-  console.log(`App listening on port ${config.SERVER_PORT}!`);
-});
-
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-wss.on('connection', function connection(ws, req) {
+const room = new GameRoom();
+room.start();
+
+wss.on('connection', (ws, req) => {
+
   const location = url.parse(req.url, true);
   // You might use location.query.access_token to authenticate or share sessions
   // or req.headers.cookie (see http://stackoverflow.com/a/16395220/151312)
@@ -32,6 +36,6 @@ wss.on('connection', function connection(ws, req) {
   ws.send('something');
 });
 
-server.listen(8080, function listening() {
+server.listen(config.SERVER_PORT, () => {
   console.log('Listening on %d', server.address().port);
 });

@@ -14,10 +14,11 @@
     "build-client": "cd ./src/client && cross-env NODE_ENV=production webpack -p",
     "dev-client": "cd ./src/client && webpack-dev-server -w",
     "build-server": "tsc -p ./src/server",
-    "dev-server": "tsc-watch -p ./src/server --onSuccess \"node ./dist/server/server.js\"",
-    "dev": "npm run clean && concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev-server\" \"npm run dev-client\"",
+    "dev-server": "tsc-watch -p ./src/server --onSuccess \"node --inspect ./dist/server/server.js\"",
+    "dev": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run dev-server\" \"npm run dev-client\"",
     "build": "npm run clean && concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run build-server\" \"npm run build-client\"",
-    "test": "jest"
+    "test": "jest",
+    "debug": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"node --inspect ./dist/server/server.js\""
   },
   "pre-commit": [
     "lint"
@@ -56,6 +57,7 @@
     "@types/node": "^7.0.11",
     "@types/react-router-dom": "^4.0.1",
     "@types/uuid": "^3.4.3",
+    "@types/ws": "^3.2.0",
     "awesome-typescript-loader": "^3.1.2",
     "babel-polyfill": "^6.23.0",
     "concurrently": "^3.4.0",
@@ -84,6 +86,7 @@
     "express": "^4.15.2",
     "file-loader": "^0.11.1",
     "http-proxy-middleware": "^0.17.4",
+    "node-gameloop": "^0.1.4",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.10",
     "react-dom": "^15.4.2",
