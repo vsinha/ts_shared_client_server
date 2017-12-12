@@ -8,9 +8,6 @@ import { staticsDevRouter } from './routes/statics-dev-router';
 import * as config from './config';
 import { GameLogic, GameRoom } from "../shared/game";
 
-console.log("here");
-console.dir(GameRoom);
-
 const app = express();
 
 // app.use(apiRouter());
